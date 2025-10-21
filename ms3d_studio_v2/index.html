@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MS3D Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+<style>
+:root{--azul:#0284c7;--turquesa:#06b6d4;--fondo-oscuro:#0f172a;--texto:#f8fafc}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--fondo-oscuro);color:var(--texto);overflow-x:hidden;scroll-behavior:smooth}
+.hero{position:relative;height:100vh;width:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%, #061426 0%, #020617 70%)} 
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(2,12,30,0.25), rgba(2,8,23,0.45));pointer-events:none;mix-blend-mode:overlay} 
+.hero .hero-abstract{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=1600&q=60');background-size:cover;background-position:center;filter:blur(18px) saturate(1.05) contrast(0.9);opacity:0.22;transform:scale(1.05);pointer-events:none} 
+.hero{position:relative;height:100vh;width:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%, #0a192f 0%, #020617 80%)}
+canvas#bg{position:absolute;top:0;left:0;width:100%;height:100%;display:block}
+.hero-content{text-align:center;z-index:10;animation:fadeIn 2s ease-in-out}
+.hero-content img{width:220px;margin-bottom:20px;animation:float 4s ease-in-out infinite}
+.hero-content h1{font-size:3rem;color:var(--turquesa);margin-bottom:10px}
+.hero-content p{font-size:1.1rem;color:#94a3b8}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+header{background:rgba(15,23,42,0.85);backdrop-filter:blur(10px);position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:12px 36px;z-index:1000;transition:background .3s}
+header.scrolled{background:rgba(2,8,23,0.95)}
+header img{height:48px}
+nav a{color:var(--texto);margin:0 14px;text-decoration:none;font-weight:600;transition:color .2s}
+nav a:hover{color:var(--turquesa)}
+section{padding:100px 20px;max-width:1200px;margin:0 auto}
+section h2{text-align:center;margin-bottom:60px;font-size:2.2em;color:var(--turquesa)}
+section h2::after{content:'';display:block;width:60px;height:3px;background:var(--turquesa);margin:12px auto 0;border-radius:3px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;justify-items:center}
+.gallery img{width:100%;border-radius:15px;box-shadow:0 6px 18px rgba(0,0,0,0.3);transition:transform .4s ease,box-shadow .4s ease}
+.gallery img:hover{transform:scale(1.05);box-shadow:0 12px 30px rgba(0,0,0,0.5)}
+.form-card{background:#1e293b;padding:36px;border-radius:18px;box-shadow:0 10px 25px rgba(0,0,0,0.4);max-width:700px;margin:0 auto}
+label{display:block;margin-top:14px;font-weight:600;color:var(--turquesa)}
+input,textarea,select,button{width:100%;padding:12px;margin-top:6px;border-radius:10px;border:1px solid #334155;font-size:14px;background:#0f172a;color:white}
+textarea{resize:vertical}
+button{background:var(--turquesa);color:white;font-weight:700;cursor:pointer;transition:transform .15s}
+button:hover{background:var(--azul);transform:scale(1.03)}
+footer{background:#020617;color:white;padding:40px 20px;text-align:center}
+footer a{color:var(--turquesa);margin:0 10px;font-size:1.4em}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero" id="top">
+  <canvas id="bg"></canvas>\n    <div class="hero-abstract" aria-hidden="true"></div>
+  <div class="hero-content">
+    <img src="assets/logo_metal.png" alt="MS3D Studio Logo">
+    <h1>MS3D Studio</h1>
+    <p>Innovación en cada capa · Precisión en cada impresión</p>
+  </div>
+</section>
+
+<header>
+  <img src="assets/logo_metal.png" alt="MS3D Logo">
+  <nav>
+    <a href="#galeria">Galería</a>
+    <a href="#materiales">Materiales</a>
+    <a href="#info">Info</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<section id="galeria" style="padding-top:140px">
+  <h2>Galería de Proyectos</h2>
+  <div class="gallery">
+    <img src="https://www.impresoras3d.com/wp-content/uploads/2021/08/soporte-lapices-3d.jpg" alt="">
+    <img src="https://www.impresoras3d.com/wp-content/uploads/2021/08/escultura-3d.jpg" alt="">
+    <img src="https://cdn.pixabay.com/photo/2017/06/07/17/05/3d-printing-2389740_1280.jpg" alt="">
+  </div>
+</section>
+
+<section id="materiales">
+  <h2>Materiales que utilizamos</h2>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center">
+    <div style="background:#1e293b;padding:20px;border-radius:12px;width:280px;text-align:center">
+      <img src="https://www.formlabs.com/blog/wp-content/uploads/2020/10/PLA-3D-Printing-Material.jpg" style="width:100%;border-radius:8px">
+      <h3 style="color:var(--turquesa);margin-top:12px">PLA</h3>
+      <p style="color:#cbd5e1">Biodegradable, ideal para prototipos y modelos decorativos.</p>
+    </div>
+    <div style="background:#1e293b;padding:20px;border-radius:12px;width:280px;text-align:center">
+      <img src="https://www.formlabs.com/blog/wp-content/uploads/2020/10/PETG-3D-Printing-Material.jpg" style="width:100%;border-radius:8px">
+      <h3 style="color:var(--turquesa);margin-top:12px">PETG</h3>
+      <p style="color:#cbd5e1">Resistente y flexible, perfecto para piezas funcionales.</p>
+    </div>
+  </div>
+</section>
+
+<section id="info">
+  <h2>¿Qué es la impresión 3D?</h2>
+  <p style="max-width:800px;margin:0 auto;color:#cbd5e1;text-align:center">La impresión 3D crea objetos tridimensionales capa por capa a partir de un modelo digital. Se usa en prototipado, industria, arte y medicina.</p>
+</section>
+
+<section id="contacto">
+  <h2>Contacto / Envía tu idea</h2>
+  <div class="form-card">
+    <form id="ideaForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" enctype="multipart/form-data">
+      <label for="name">Nombre</label>
+      <input id="name" name="name" type="text" placeholder="Tu nombre" required>
+      <label for="email">Correo electrónico</label>
+      <input id="email" name="email" type="email" placeholder="correo@ejemplo.com" required>
+      <label for="description">Descripción de la idea</label>
+      <textarea id="description" name="description" rows="5" placeholder="Describe tu modelo/idea" required></textarea>
+      <label for="file">Archivo 3D (.stl .obj .zip) — opcional</label>
+      <input id="file" name="file" type="file" accept=".stl,.obj,.zip">
+      <label for="material">Material preferido</label>
+      <select id="material" name="material">
+        <option>PLA</option><option>PETG</option><option>ABS</option><option>TPU</option>
+      </select>
+      <button type="submit">Enviar idea</button>
+      <div id="message" style="margin-top:12px;font-weight:700;text-align:center"></div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 MS3D Studio · info@ms3dstudio.com</p>
+  <div style="margin-top:12px">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-linkedin"></i></a>
+  </div>
+</footer>
+
+<script>
+// Three.js background particles
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg'), alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+camera.position.z = 5;
+
+const geometry = new THREE.BufferGeometry();
+const count = 1600;
+const positions = new Float32Array(count * 3);
+for (let i = 0; i < count * 3; i++) positions[i] = (Math.random() - 0.5) * 10;
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const material = new THREE.PointsMaterial({ color: 0x06b6d4, size: 0.03, transparent: true, opacity: 0.85 });
+const points = new THREE.Points(geometry, material);
+scene.add(points);
+
+function animate() {
+  requestAnimationFrame(animate);
+  points.rotation.x += 0.0009;
+  points.rotation.y += 0.0011;
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Header scrolled class
+window.addEventListener('scroll', () => {
+  document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ScrollReveal
+ScrollReveal().reveal('h2', { delay: 200, origin: 'top', distance: '30px', duration: 800 });
+ScrollReveal().reveal('.gallery img', { delay: 200, interval: 150, origin: 'bottom', distance: '40px' });
+ScrollReveal().reveal('.form-card', { delay: 300, origin: 'bottom', distance: '40px' });
+
+// Form submit with Formspree and simple file-size validation (10MB)
+const form = document.getElementById('ideaForm');
+const messageDiv = document.getElementById('message');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fileInput = document.getElementById('file');
+  if (fileInput.files.length && fileInput.files[0].size > 10*1024*1024) {
+    messageDiv.style.color = 'salmon';
+    messageDiv.textContent = 'El archivo es demasiado grande (máx 10MB).';
+    return;
+  }
+  const data = new FormData(form);
+  try {
+    const resp = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+    if (resp.ok) {
+      messageDiv.style.color = 'lightgreen';
+      messageDiv.textContent = 'Gracias — tu idea ha sido enviada.';
+      form.reset();
+    } else {
+      throw new Error('No enviado');
+    }
+  } catch (err) {
+    messageDiv.style.color = 'salmon';
+    messageDiv.textContent = 'Error al enviar. Revisa tu conexión o el Formspree ID.';
+  }
+});
+</script>
+
+</body>
+</html>
